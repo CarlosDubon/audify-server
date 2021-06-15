@@ -38,7 +38,6 @@ server.on("listening", onListening);
  */
 
 const io = Socket(server, {agent: false});
-
 io.on("connection", socketConnectionFun);
 
 function normalizePort(val) {

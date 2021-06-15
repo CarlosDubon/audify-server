@@ -1,5 +1,5 @@
 const debug = require("debug")("app:socket");
-const maxApi = require("max-api");
+//const maxApi = require("max-api");
 
 const acceptedClients = [];
 
@@ -16,7 +16,7 @@ const connectionFunction = (client) => {
   client.on("position", ({lat, lang}) => {
     // TODO: Varify if client is valid
 
-     maxApi.outlet({lat, lang});
+     //maxApi.outlet({lat, lang});
   })
   
 };
