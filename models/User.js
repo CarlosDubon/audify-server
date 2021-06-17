@@ -1,6 +1,8 @@
 const Mongoose = require('mongoose');
 const Schema = Mongoose.Schema;
 
+const { ROLES } = require('@app/constants');
+
 const crypto = require('crypto');
 const generatePassword = require("password-generator");
 
@@ -19,6 +21,12 @@ const userSchema = new Schema({
     trim: true,
     lowercase: true
   },
+  role: {
+    type: String,
+    required: true,
+    enum: ROLES.ENUM
+
+  },
   hashedPassword: {
     type: String,
     required: true,
@@ -29,7 +37,7 @@ const userSchema = new Schema({
   timestamps: true
 });
 
-UserSchema.methods = {
+userSchema.methods = {
   comparePassword: function (input) {
       return this.encryptPassword(input) === this.hashedPassword;
   },
@@ -52,7 +60,7 @@ UserSchema.methods = {
   }
 };
 
-UserSchema.virtual("password").set(function (password=generatePassword(16, false)) {
+userSchema.virtual("password").set(function (password=generatePassword(16, false)) {
   if (password === "") return;
 
   this.salt = this.makeSalt();

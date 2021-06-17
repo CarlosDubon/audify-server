@@ -9,6 +9,7 @@
   "dependencies": {
     "@app/classes": "file:classes",
     "@app/config": "file:config",
+    "@app/constants": "file:constants",
     "@app/controllers": "file:controllers",
     "@app/middlewares": "file:middlewares",
     "@app/models": "file:models",
@@ -23,6 +24,7 @@
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "express-validator": "^6.12.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
     "morgan": "~1.9.1",
     "password-generator": "^2.3.2",
