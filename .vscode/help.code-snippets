@@ -46,7 +46,7 @@
     "JSON Response":{
         "scope": "javascript,typescript",
          "prefix": "e-response",
-         "body": "return res.status(${1|200,201,404,500,401,403|}).json($2);",
+         "body": "return res.status(${1|200,201,404,500,401,403,400,409|}).json($2);",
          "description": "Create a basic Response"
     }
 }
