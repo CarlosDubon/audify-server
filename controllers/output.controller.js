@@ -24,4 +24,19 @@ controller.askForOutput = async (req, res, next) => {
   }
 }
 
+controller.register = async (req, res, next) => {
+  try{
+    const { device, channels } = req.body;
+
+    const { status: outputCreated } = await outputService.register(req.body);
+    if(!outputCreated) return res.status(409).json({ error: "Output not created!" });
+
+    return res.status(201).json({ 
+      message: "Output created!"
+     });
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = controller;
