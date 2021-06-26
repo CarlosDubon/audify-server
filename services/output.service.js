@@ -66,6 +66,8 @@ service.findOneFree = async () => {
 
 service.findOneByUserIn = async (userID) => {
   try{
+    await service.timeLimitPurge();
+
     const output = await Output.findOne({ userIn: userID });
 
     if(!output) return new ServiceResponse(false);
