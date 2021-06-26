@@ -13,7 +13,7 @@ const connectionFunction = (client) => {
 
     debug(`Lat: ${lat} - Long: ${long}`);
 
-     maxApi.outlet({lat, lang});
+     maxApi.outlet({lat, long});
   });
 
   client.on('disconnect',  () => {
