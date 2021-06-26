@@ -28,7 +28,7 @@ const authVerification = async (socket, next) => {
   debug(socket.handshake.auth); 
   if(token) {
     const payload = verifyToken(token);
-    if(payload) return next(new Error("Authentication error"));
+    if(!payload) return next(new Error("Authentication error"));
 
     const {_id: userID} = payload;
     const { status: userExists, content: user } = await userService.findOneById(userID);
