@@ -7,14 +7,10 @@ const connectionFunction = (client) => {
   
   debug("Connection Established");
 
-  client.on("make-request", ()=> {
-    // TODO: Make LOL queue to see if it can establish a connection
-
-    client.emit("queue-response", true);
-  });
-
-  client.on("position", ({lat, lang}) => {
+  client.on("position", ({lat, long}) => {
     // TODO: Varify if client is valid
+
+    debug(`Lat: ${lat} - Long: ${long}`);
 
      //maxApi.outlet({lat, lang});
   })
