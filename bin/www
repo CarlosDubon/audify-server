@@ -10,7 +10,7 @@ var app = require("../app");
 var debug = require("debug")("app:server");
 var http = require("http");
 const Socket = require("socket.io");
-const socketConnectionFun = require("../sockets/index.socket")
+const { connectionFunction, authVerification } = require("../sockets/index.socket")
 
 /**
  * Get port from environment and store in Express.
@@ -38,7 +38,9 @@ server.on("listening", onListening);
  */
 
 const io = Socket(server, {agent: false});
-io.on("connection", socketConnectionFun);
+io
+  .use(authVerification)
+  .on("connection", connectionFunction);
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
