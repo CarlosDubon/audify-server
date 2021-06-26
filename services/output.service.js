@@ -26,7 +26,7 @@ service.timeLimitPurge = async () => {
       const { lastTime } = output;
       const diff = Math.abs(now - lastTime);
 
-      if(lastTime && diff < GENERAL.USER_LIMIT_TIME) {
+      if(lastTime && diff > GENERAL.USER_LIMIT_TIME) {
         output.userIn = null;
         output.lastTime = null;
 
