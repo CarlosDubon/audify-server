@@ -23,6 +23,7 @@ const connectionFunction = (client) => {
 };
 
 const authVerification = async (socket, next) => {
+  debug("Checking user")
   const { token } = socket.handshake;
   if(token) {
     const payload = verifyToken(token);
@@ -35,6 +36,7 @@ const authVerification = async (socket, next) => {
     const { status: validToken } = await userService.verifyValidToken(userID, token);
     if(!validToken) return next(new Error("Authentication error"));
 
+    debug("User checked!")
     socket.user = user;
     next();
   }else {
