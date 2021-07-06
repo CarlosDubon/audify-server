@@ -11,6 +11,8 @@ const outputController = require("@app/controllers/output.controller");
 
 router.get("/ask", outputController.askForOutput);
 
+router.get("/play", outputController.playOutput);
+
 router.use(roleValidatorHelper(ROLES.ADMIN));
 router.post("/", registerValidator, runValidator, outputController.register);
 
