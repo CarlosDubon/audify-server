@@ -47,7 +47,7 @@ controller.playOutput = async (req, res, next) => {
     const { status: outputExists, content: output } = await outputService.findOneByUserIn(userID);
     if(!outputExists) return res.status(404).json({ error: "No output register to this user" });
 
-    console.log(portAudio.getDevices());
+    const indexDevice = portAudio.getDevices().findIndex((device)=> device.name === output.device);
 
     return res.status(200).json({ message: "Playing music" });
   } catch (error) {
