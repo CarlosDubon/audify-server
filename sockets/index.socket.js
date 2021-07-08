@@ -9,11 +9,12 @@ const connectionFunction = (client) => {
   
   debug("Connection Established");
 
-  client.on("position", ({lat, long}) => {
+  client.on("position", ({lat, long, rot=0, option=1}) => {
 
     debug(`Lat: ${lat} - Long: ${long}`);
+    debug(`Rot: ${rot} - Option: ${option}`);
 
-     //maxApi.outlet({lat, long});
+     //maxApi.outlet({lat, long, rot, option});
   });
 
   client.on('disconnect',  () => {
