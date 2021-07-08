@@ -3,7 +3,7 @@ const debug = require("debug")("app:socket");
 const userService = require("@app/services/user.service");
 const outputService = require("@app/services/output.service");
 const { verifyToken } = require("@app/utils/jwt.tools");
-//const maxApi = require("max-api");
+const maxApi = require("max-api");
 
 const connectionFunction = (client) => {
   
@@ -14,7 +14,7 @@ const connectionFunction = (client) => {
     debug(`Lat: ${lat} - Long: ${long}`);
     debug(`Rot: ${rot} - Option: ${option}`);
 
-     //maxApi.outlet({lat, long, rot, option});
+     maxApi.outlet({lat, long, rot, option});
   });
 
   client.on('disconnect',  () => {
