@@ -1,5 +1,4 @@
 const outputService = require('@app/services/output.service');
-const portAudio = require("naudiodon");
 
 const controller = {};
 
@@ -42,14 +41,7 @@ controller.register = async (req, res, next) => {
 
 controller.playOutput = async (req, res, next) => {
   try{
-    const { _id: userID } = req.user;
 
-    const { status: outputExists, content: output } = await outputService.findOneByUserIn(userID);
-    if(!outputExists) return res.status(404).json({ error: "No output register to this user" });
-
-    const indexDevice = portAudio.getDevices().findIndex((device)=> device.name === output.device);
-
-    return res.status(200).json({ message: "Playing music" });
   } catch (error) {
     next(error);
   }
