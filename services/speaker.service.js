@@ -5,10 +5,10 @@ const ServiceResponse = require("@app/classes/ServiceResponse");
 
 const service = {};
 
-service.register = async ({ name, sound, latitude, longitude }) => {
+service.register = async ({ name, sound, latitude, longitude, radius }) => {
   try{
     const speaker =  new Speaker({
-      name, sound, latitude, longitude
+      name, sound, latitude, longitude, radius
     });
 
     const speakerSaved = await speaker.save();
@@ -40,9 +40,9 @@ service.findOneById = async (id) => {
   }
 }
 
-service.updateSpeaker = async (speaker, { name, sound, latitude, longitude }) => {
+service.updateSpeaker = async (speaker, { name, sound, latitude, longitude, radius }) => {
   try{
-      const updateFields = sanitizeObject({ name, sound, latitude, longitude });
+      const updateFields = sanitizeObject({ name, sound, latitude, longitude, radius });
       
       Object.keys(updateFields).forEach(key => {
         speaker[key] = updateFields[key];

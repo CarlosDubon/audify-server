@@ -15,6 +15,10 @@ const SpeakerSchema = new Schema({
     type: Number,
     required: true,
   },
+  radius: {
+    type: Number, 
+    required: true
+  },
   photo: {
     type: String
   },
