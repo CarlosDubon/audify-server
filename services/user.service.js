@@ -87,4 +87,17 @@ service.verifyValidToken = async (id, token) => {
   }
 }
 
+service.updatePassword = async (user, password) => {
+  try{
+    user.password = password;
+
+    const userSaved = user.save();
+
+    if(!userSaved) return new ServiceResponse(false);
+    return new ServiceResponse(true); 
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = service;
