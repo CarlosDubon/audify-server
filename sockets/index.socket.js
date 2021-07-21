@@ -6,13 +6,14 @@ const { verifyToken } = require("@app/utils/jwt.tools");
 //const maxApi = require("max-api");
 
 const connectionFunction = (client) => {
-  
+
   debug("Connection Established");
 
-  client.on("position", ({lat, long, rot=0, option=1}) => {
+  client.on("position", ({lat, long, rot=0, option=1,pLat,pLong,sOption}) => {
 
     debug(`Lat: ${lat} - Long: ${long}`);
-    debug(`Rot: ${rot} - Option: ${option}`);
+    debug(`Rot: ${rot} - Option: ${option} - SourceOption ${sOption}`);
+    debug(`Place latitude: ${pLat} - Place longitude: ${pLong}`);
 
      //maxApi.outlet({lat, long, rot, option});
   });
@@ -20,13 +21,13 @@ const connectionFunction = (client) => {
   client.on('disconnect',  () => {
     debug("User diconnected")
   })
-  
+
 };
 
 const authVerification = async (socket, next) => {
   debug("Checking user")
   const { token } = socket.handshake.auth;
-  debug(socket.handshake.auth); 
+  debug(socket.handshake.auth);
   if(token) {
     const payload = verifyToken(token);
     if(!payload) return next(new Error("Authentication error"));
