@@ -18,6 +18,7 @@ router.use(roleValidatorHelper(ROLES.ADMIN));
 router.post("/register", uploadAudio("sound").single("sound"),speakerValidator.register, runValidator, speakerController.register);
 router.put("/update/:id", uploadAudio("sound").single("sound"), speakerValidator.idInParams, speakerValidator.update, runValidator, speakerController.update);
 router.patch("/photo/:id", uploadImage("photo").single("photo"), speakerValidator.idInParams, speakerValidator.updatePhoto, runValidator, speakerController.udpatePhoto);
+router.delete("/delete/many", speakerValidator.idsInArray, runValidator, speakerController.deleteMany);
 router.delete("/delete/:id", speakerValidator.idInParams, runValidator, speakerController.delete);
 
 module.exports = router;

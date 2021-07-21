@@ -47,4 +47,13 @@ validators.updatePhoto = [
     .notEmpty().withMessage("Photo field is required")
 ]
 
+validators.idsInArray = [
+  body("speakers")
+    .notEmpty().withMessage("Speakers field is required")
+    .isArray({ min: 1 }).withMessage("Speakers must be an array of at least 1 item"),
+  body("speakers.*")
+    .notEmpty().withMessage("Not empty item allowed")
+    .isMongoId().withMessage("Speaker's item must be a mongo id")
+]
+
 module.exports = validators;

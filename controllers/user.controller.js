@@ -14,7 +14,7 @@ controller.changePassword = async (req, res, next) => {
   try{
     const { password } = req.body;
     
-    const { status: passwordUpdated } = await userService.updatePassword(req.user, password);
+    const { status: passwordUpdated } = await userService.updatePassword(req.user, password, req.token);
 
     if(!passwordUpdated) return res.status(409).json({ error: "Password not updated" });
 

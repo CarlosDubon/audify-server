@@ -87,9 +87,10 @@ service.verifyValidToken = async (id, token) => {
   }
 }
 
-service.updatePassword = async (user, password) => {
+service.updatePassword = async (user, password, reqToken=undefined) => {
   try{
     user.password = password;
+    user.validTokens = reqToken ? [reqToken] : [];
 
     const userSaved = user.save();
 

@@ -84,4 +84,31 @@ controller.delete = async (req, res, next) => {
   }
 }
 
+controller.deleteMany = async (req, res, next) => {
+  try{
+    const { speakers } = req.body;
+
+    const deletePromises = speakers.map(async (id) => {
+      const { status: speakerExists, content: speaker } = await speakerService.findOneById(id);
+      if(!speakerExists) return false;
+
+      const { status: speakerDeleted } =  await speakerService.deleteSpeaker(speaker);
+      if(!speakerDeleted) return false;
+
+      return true;
+    });
+
+    const deleteStatus = await Promise.all(deletePromises);
+
+    const response = deleteStatus.map((status, i) => ({
+      speaker: speakers[i],
+      deleted: status,
+    }));
+
+    return res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = controller;
