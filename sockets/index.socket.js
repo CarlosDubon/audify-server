@@ -1,5 +1,6 @@
 const debug = require("debug")("app:socket");
 
+const Speaker = require("@app/models/Speaker");
 const userService = require("@app/services/user.service");
 const outputService = require("@app/services/output.service");
 const { verifyToken } = require("@app/utils/jwt.tools");
@@ -8,6 +9,12 @@ const { verifyToken } = require("@app/utils/jwt.tools");
 const connectionFunction = (client) => {
 
   debug("Connection Established");
+
+  Speaker
+    .watch()
+    .on("change", data => {
+      client.emit("speaker_update", true);
+    })
 
   client.on("position", ({lat, long, rot=0, option=1,pLat,pLong,sOption}) => {
 
