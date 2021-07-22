@@ -52,6 +52,17 @@ service.findOneById = async (id) => {
   }
 }
 
+service.findAll = async () => {
+  try{
+    const users = await User.find({})
+      .select("-hashedPassword -validTokens -salt");
+
+    return new ServiceResponse(true, users);
+  } catch (error) {
+    throw error;
+  }
+}
+
 service.insertValidToken = async (id, token) => {
   try{
     const user = await User.findById(id);
@@ -96,6 +107,19 @@ service.updatePassword = async (user, password, reqToken=undefined) => {
 
     if(!userSaved) return new ServiceResponse(false);
     return new ServiceResponse(true); 
+  } catch (error) {
+    throw error;
+  }
+}
+
+service.updateRole = async (user, role) => {
+  try{
+    user.role = role;
+
+    const userSaved = user.save();
+
+    if(!userSaved) return new ServiceResponse(false);
+    return new ServiceResponse(true);
   } catch (error) {
     throw error;
   }
