@@ -1,4 +1,5 @@
 const speakerService = require("@app/services/speaker.service");
+const { SPEAKERS } = require ("@app/constants");
 
 const controller = {};
 
@@ -30,6 +31,14 @@ controller.findOneById = async (req, res, next) => {
     if(!speakerExists) return res.status(404).json({ error: "Speaker not found!" });
 
     return res.status(200).json(speaker);
+  } catch (error) {
+    next(error);
+  }
+}
+
+controller.findAllTypes = async (req, res, next) => {
+  try{
+    return res.status(200).json(SPEAKERS.FUNCTIONS);
   } catch (error) {
     next(error);
   }

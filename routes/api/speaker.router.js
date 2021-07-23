@@ -11,6 +11,7 @@ const speakerValidator = require("@app/validators/speaker.validator")
 const speakerController = require("@app/controllers/speaker.controller");
 
 router.get("/", speakerController.findAll);
+router.get("/types", speakerController.findAllTypes);
 router.get("/:id", speakerValidator.idInParams, runValidator, speakerController.findOneById);
 
 router.use(roleValidatorHelper(ROLES.ADMIN)); 

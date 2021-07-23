@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { SPEAKERS } = require("@app/constants");
 const Schema = mongoose.Schema;
 
 const SpeakerSchema = new Schema({
@@ -25,6 +26,11 @@ const SpeakerSchema = new Schema({
   sound: {
     type: String,
     required: true,
+  },
+  type: {
+    type: Number,
+    enum: SPEAKERS.ID_FUNCTIONS,
+    required: true
   }
 }, {
   timestamps: true

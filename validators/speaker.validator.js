@@ -1,4 +1,5 @@
 const { body, param } = require("express-validator");
+const { SPEAKERS } = require("@app/constants");
 
 const validators = {};
 
@@ -21,6 +22,10 @@ validators.register = [
   body("radius")
     .notEmpty().withMessage("Radius field is requiered")
     .isNumeric().withMessage("Radius must be numeric"),
+  body("type")
+    .notEmpty().withMessage("Type field is requiered")
+    .isNumeric().withMessage("Type must be numeric")
+    .isIn(SPEAKERS.ID_FUNCTIONS).withMessage("Type must be registered"),
   body("sound")
     .notEmpty().withMessage("Sound file is required")
 ]
@@ -38,6 +43,10 @@ validators.update = [
   body("radius").optional()
     .notEmpty().withMessage("Radius field is requiered")
     .isNumeric().withMessage("Radius must be numeric"),
+  body("type").optional()
+    .notEmpty().withMessage("Type field is requiered")
+    .isNumeric().withMessage("Type must be numeric")
+    .isIn(SPEAKERS.ID_FUNCTIONS).withMessage("Type must be registered"),
   body("sound").optional()
     .notEmpty().withMessage("Sound file is required")
 ]
