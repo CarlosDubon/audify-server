@@ -9,7 +9,7 @@ const service = {};
 service.register = async ({ name, sound, latitude, longitude, radius, type }) => {
   try{
     const speakerType = SPEAKERS.FUNCTIONS.find(func => func.id === type);
-
+    console.log(type);
     if(!speakerType) return new ServiceResponse(false)
 
     const speaker =  new Speaker({

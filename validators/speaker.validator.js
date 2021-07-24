@@ -25,6 +25,7 @@ validators.register = [
   body("type")
     .notEmpty().withMessage("Type field is requiered")
     .isNumeric().withMessage("Type must be numeric")
+    .toInt()
     .isIn(SPEAKERS.ID_FUNCTIONS).withMessage("Type must be registered"),
   body("sound")
     .notEmpty().withMessage("Sound file is required")
@@ -46,6 +47,7 @@ validators.update = [
   body("type").optional()
     .notEmpty().withMessage("Type field is requiered")
     .isNumeric().withMessage("Type must be numeric")
+    .toInt()
     .isIn(SPEAKERS.ID_FUNCTIONS).withMessage("Type must be registered"),
   body("sound").optional()
     .notEmpty().withMessage("Sound file is required")
