@@ -1,5 +1,6 @@
 const Speaker = require("@app/models/Speaker");
 const { sanitizeObject } = require("@app/utils/object.tools");
+const { SPEAKERS } = require("@app/constants");
 
 const ServiceResponse = require("@app/classes/ServiceResponse");
 
@@ -7,8 +8,12 @@ const service = {};
 
 service.register = async ({ name, sound, latitude, longitude, radius, type }) => {
   try{
+    const speakerType = SPEAKERS.FUNCTIONS.find(func => func.id === type);
+
+    if(!speakerType) return new ServiceResponse(false)
+
     const speaker =  new Speaker({
-      name, sound, latitude, longitude, radius, type
+      name, sound, latitude, longitude, radius, type: speakerType
     });
 
     const speakerSaved = await speaker.save();
@@ -42,7 +47,9 @@ service.findOneById = async (id) => {
 
 service.updateSpeaker = async (speaker, { name, sound, latitude, longitude, radius, type }) => {
   try{
-      const updateFields = sanitizeObject({ name, sound, latitude, longitude, radius, type });
+      const speakerType = SPEAKERS.FUNCTIONS.find(func => func.id === type);
+
+      const updateFields = sanitizeObject({ name, sound, latitude, longitude, radius, type: speakerType ? speakerType : undefined });
       
       Object.keys(updateFields).forEach(key => {
         speaker[key] = updateFields[key];

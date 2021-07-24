@@ -28,9 +28,13 @@ const SpeakerSchema = new Schema({
     required: true,
   },
   type: {
-    type: Number,
+    type: {
+      name: String,
+      id: Number
+    },
     enum: SPEAKERS.ID_FUNCTIONS,
-    required: true
+    required: true, 
+    index: false
   }
 }, {
   timestamps: true
