@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(["/api", "/api/v1", "/v1"], apiRouter);
+app.use(["/api/v1", "/api", "/v1"], apiRouter);
 app.use(errorHandler);
 
 module.exports = app;
