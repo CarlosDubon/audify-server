@@ -10,11 +10,17 @@ const connectionFunction = (client) => {
 
   debug("Connection Established");
 
-  const changeStream = Speaker.watch();
+  let changeStream = null;
+
+  try {
+    changeStream = Speaker.watch();
   
-  changeStream.on("change", data => {
-    client.emit("speaker_update", true);
-  })
+    changeStream.on("change", data => {
+      client.emit("speaker_update", true);
+    })
+  } catch (error) {
+    client.emit("speaker_update", false);
+  }
 
   client.on("position", ({lat, long, rot=0, option=1,pLat,pLong,sOption}) => {
 
@@ -26,11 +32,13 @@ const connectionFunction = (client) => {
   });
 
   client.on('disconnect',  () => {
-    changeStream.removeAllListeners();
-    changeStream.close((error, result)=> {
-      if(error) debug(error);
-      debug(result)
-    });
+    if(!changeStream){
+      changeStream.removeAllListeners();
+      changeStream.close((error, result)=> {
+        if(error) debug(error);
+        debug(result)
+      });
+    }
     debug("User diconnected")
   })
 
