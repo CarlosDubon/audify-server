@@ -64,3 +64,5 @@ public/uploads/audios/*.*
 public/uploads/images/*.*
 
 !.gitkeep
+
+build/

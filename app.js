@@ -22,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(["/api/v1", "/api", "/v1"], apiRouter);
 
+app.use(express.static(path.join(__dirname, 'build')));
 app.get("/*", (req, res)=> {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 })
