@@ -1,6 +1,7 @@
 const userService = require('@app/services/user.service');
 const { createToken } = require('@app/utils/jwt.tools');
 const { sendMail } = require("@app/utils/mailer.tools");
+const { getRegisterMailText } = require("@app/utils/formatter.tools");
 
 const controller = {};
 
@@ -17,7 +18,7 @@ controller.register = async (req, res, next) => {
 
     sendMail(
       email, "[Audify] User created successfully",
-      `Welcome to our family, your user ${username} was successfully created. From now you can enjoy our AR experience with audio. Hope you enjoy it!`
+      getRegisterMailText(username)
     )
 
     return res.status(201).json({
