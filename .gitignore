@@ -63,6 +63,6 @@ typings/
 public/uploads/audios/*.*
 public/uploads/images/*.*
 
-build/*
+build/
 
 !.gitkeep
