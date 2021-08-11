@@ -23,4 +23,19 @@ validators.loginValidator = [
     .notEmpty().withMessage("password field is required")
 ]
 
+validators.forgotPasswordValidator = [
+  body("username")
+    .notEmpty().withMessage("username field is required"),
+]
+
+validators.passwordRecoveryValidator = [
+  body("token")
+    .notEmpty().withMessage("token field is required")
+    .isJWT().withMessage("invalid token"),
+  body("password")
+    .notEmpty().withMessage("password field is required")
+    .isLength({ min: 8, max:32}).withMessage("password field must be between 8 and 32 characters")
+    .matches(REGEXP.PASSWORD).withMessage("password field must have at least one uppercase, one lowercase and one number"),
+]
+
 module.exports = validators;

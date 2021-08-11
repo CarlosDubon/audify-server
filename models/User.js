@@ -33,6 +33,10 @@ const userSchema = new Schema({
   },
   salt: String,
   validTokens: [String],
+  passwordResetToken: {
+    type: String,
+    default: null
+  }
 }, {
   timestamps: true
 });

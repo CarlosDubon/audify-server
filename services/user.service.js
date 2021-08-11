@@ -42,7 +42,7 @@ service.findOneByUsernameOrEmail = async ({username, email}) => {
 service.findOneById = async (id) => {
   try{
     const user = await User.findById(id)
-      .select("-hashedPassword -validTokens -salt");
+      .select("-hashedPassword -validTokens -salt -passwordResetToken");
 
     if(!user) return new ServiceResponse(false);
 
@@ -55,7 +55,7 @@ service.findOneById = async (id) => {
 service.findAll = async () => {
   try{
     const users = await User.find({})
-      .select("-hashedPassword -validTokens -salt");
+      .select("-hashedPassword -validTokens -salt -passwordResetToken");
 
     return new ServiceResponse(true, users);
   } catch (error) {
@@ -98,10 +98,43 @@ service.verifyValidToken = async (id, token) => {
   }
 }
 
+service.insertPasswordResetToken = async (id, token) => {
+  try{
+    const user = await User.findById(id);
+    if(!user) return new ServiceResponse(false);
+
+    user.passwordResetToken = token;
+
+    const userSaved = await user.save();
+
+    if(!userSaved) return new ServiceResponse(false);
+    return new ServiceResponse(true);    
+  } catch (error) {
+    throw error;
+  }
+}
+
+service.verifyPasswordResetToken = async (id, token) => {
+  try{
+    const user = await User.findById(id);
+    if(!user) return new ServiceResponse(false);
+
+    const userToken = user.passwordResetToken;
+
+    if(userToken !== token) return new ServiceResponse(false);
+    if(!verifyToken(userToken)) return new ServiceResponse(false);
+    
+    return new ServiceResponse(true);
+  } catch (error) {
+    throw error;
+  }
+}
+
 service.updatePassword = async (user, password, reqToken=undefined) => {
   try{
     user.password = password;
     user.validTokens = reqToken ? [reqToken] : [];
+    user.passwordResetToken = null;
 
     const userSaved = user.save();
 
