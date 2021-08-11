@@ -28,7 +28,7 @@ tools.getPasswordRecoveryMailText = (token) => {
       If you did't request for password recovery, just ignore this email. It could be a mistake or something more darker... Don't worry, we have your information safe and sound.
     </p>
     <p>
-      Here is the link: <a href="${PANEL_URL}/recovery-password?t=${token}">Password recovery </a>. For security reasons, this link wiil not be available forever, so we suggest using it as soon as posible. Thank you for trusting us, stay safe.
+      Here is the link: <a href="${PANEL_URL}/password-recovery?t=${token}">Password recovery </a>. For security reasons, this link wiil not be available forever, so we suggest using it as soon as posible. Thank you for trusting us, stay safe.
     </p>
     <hr/>
     <br/>
