@@ -1,0 +1,181 @@
+#!/usr/bin/env node
+
+require("dotenv").config();
+
+const { connect, disconnect } = require("@app/config/mongoose");
+const { REGEXP, ROLES } = require("@app/constants");
+
+const userService = require("@app/services/user.service");
+
+const figlet = require("figlet");
+const chalk = require("chalk");
+const boxen = require("boxen");
+const prompts = require("prompts");
+const ora = require("ora");
+
+const runAdmin = async () => {
+  try {
+    const databaseSpinner = ora("Loading database\n").start();
+    await connect();
+    databaseSpinner.succeed("Database loaded!\n");
+
+    const welcome = figlet.textSync("Audify", {
+      font: "Big",
+      horizontalLayout: "default",
+      verticalLayout: "default",
+      width: 90,
+      whitespaceBreak: true,
+    });
+
+    const customWelcome = boxen(chalk.bold.white(welcome), {
+      padding: 1,
+      margin: 1,
+      borderStyle: "round",
+    });
+
+    //Welcome text
+    console.log(customWelcome);
+    let option = 0;
+
+    do {
+      console.log(`\n\n${chalk.bold.hex("#E91E63")("Admin CLI")}\n\n`);
+
+      const { value } = await prompts({
+        type: "select",
+        name: "value",
+        message: "What do you want to do?",
+        choices: [
+          {
+            title: "Create a User",
+            description: "Join someone to the team",
+            value: 1,
+          },
+          { title: "Exit", description: "Goodbye!", value: 0 },
+        ],
+      });
+
+      console.log("\n\n");
+
+      option = value;
+
+      switch (option) {
+        case 1:
+          await registerUser();
+          break;
+      }
+    } while (option != 0);
+  } catch (error) {
+    console.log(chalk.bold.hex("#F44336")("Error in istalation"));
+  } finally {
+    await disconnect();
+    console.log(chalk.bold.hex("#00BCD4")("See ya!"));
+  }
+};
+
+const registerUser = async () => {
+  let flagUserInfo = false;
+  let aborted = false;
+  let userInfo = {};
+
+  do {
+    console.log(`\n\n${chalk.bold.whiteBright("Superuser configuration")}\n\n`);
+
+    const user = await prompts(
+      [
+        {
+          type: "text",
+          name: "username",
+          message: "Give me a username:",
+          validate: (value) =>
+            !value
+              ? "You must give a username"
+              : true,
+        },
+        {
+          type: "password",
+          name: "password",
+          message: "A super secure password: ",
+          validate: (value) =>
+            !REGEXP.PASSWORD.test(value)
+              ? "At least 1 letter 1 Number, and length between 8 and 32 chars"
+              : true,
+        },
+        {
+          type: "text",
+          name: "email",
+          message: "An email:",
+          validate: (value) =>
+            !value
+              ? "You must give an email"
+              : true,
+        },
+        {
+          type: "select",
+          name: "role",
+          message: "Pick a role:",
+          choices: [
+            {
+              title: "Administrator",
+              description: 'A user with all privilegies granted thought to manage the system',
+              value: ROLES.ADMIN,
+            },
+            {
+              title: "Normal user",
+              description: "A user thought to enjoy the app ",
+              value: ROLES.USER,
+            },
+          ],
+        },
+      ],
+      {
+        onCancel: () => {
+          aborted = true;
+        },
+      }
+    );
+
+    if (aborted) return;
+
+    userInfo = { ...user };
+
+    const confirm = await prompts({
+      type: "toggle",
+      name: "value",
+      message: "Are you sure?",
+      active: "yes",
+      inactive: "no",
+    });
+
+    flagUserInfo = confirm.value;
+  } while (!flagUserInfo);
+
+  const userSpinner = ora({
+    text: "Registering user",
+    color: "cyan",
+  }).start();
+
+  const { status: userExists } = await userService.findOneByUsernameOrEmail({ 
+    username: userInfo.username,
+    email: userInfo.email
+  });
+
+  if (userExists) {
+    userSpinner.fail(chalk.bold.hex("#F44336")("User already exists"));
+    return;
+  }
+
+  const { status: userCreated } = await userService.register({
+    username: userInfo.username,
+    email: userInfo.email,
+    password: userInfo.password
+  }, userInfo.role);
+
+  if (!userCreated) {
+    userSpinner.fail(chalk.bold.hex("#F44336")("User cannot be created"));
+    return;
+  }
+
+  userSpinner.succeed(chalk.bold.hex("#4CAF50")("User registration complete"))
+};
+
+runAdmin();
