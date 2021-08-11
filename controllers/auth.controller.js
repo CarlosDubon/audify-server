@@ -44,7 +44,7 @@ controller.login = async (req, res, next) => {
     const { status: tokenSaved } = await userService.insertValidToken(user._id, token);
     if(!tokenSaved) return res.status(409).json({ error: "Cannot login!" });
 
-    return res.status(200).json({ token: token });
+    return res.status(200).json({ token: token, role: user.role });
   } catch (error) {
     next(error);
   }
