@@ -5,21 +5,21 @@ const tools = {};
 tools.getRegisterMailText = (username = "username") => {
   return(`
     <h1> Audify </h1>
-    <h2> Make the sound flow within you <h2>
+    <h2> Make the sound flow within you </h2>
     <hr/><br/>
     <p>
       Welcome to our family, your user <i>${username}</i> was successfully created. From now you can enjoy our AR experience with audio. <b>Hope you enjoy it!</b>
     </p>
     <hr/>
     <br/>
-    <p><i>From: Audify &lt;dev/&gt; team</i></p>
+    <h3><i>From: Audify &lt;dev/&gt; team</i></h3>
   `)
 }
 
 tools.getPasswordRecoveryMailText = (token) => {
   return(`
     <h1> Audify </h1>
-    <h2> Make the sound flow within you <h2>
+    <h2> Make the sound flow within you </h2>
     <hr/><br/>
     <p>
       Hi! it seems like you forgot your password. Don't worry, we have a solution to your little problem. Please, click the following link and reset your password. Be more careful the next time.
@@ -32,7 +32,7 @@ tools.getPasswordRecoveryMailText = (token) => {
     </p>
     <hr/>
     <br/>
-    <p><i>From: Audify &lt;dev/&gt; team</i></p>
+    <h3><i>From: Audify &lt;dev/&gt; team</i></h3>
   `);
 }
 
